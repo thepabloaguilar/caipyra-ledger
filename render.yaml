@@ -1,0 +1,50 @@
+services:
+    - type: web
+      name: caipyra-ledger-api
+      runtime: python
+      repo: https://github.com/thepabloaguilar/caipyra-ledger
+      plan: free
+      region: virginia
+      branch: main
+      buildCommand: ./render-build.sh
+      startCommand: uvicorn caipyra_ledger.main:app --host 0.0.0.0 --port $PORT
+      healthCheckPath: /api/v1/health/check
+      autoDeployTrigger: checksPass
+      envVars:
+        - key: DEBUG
+          value: 'false'
+        - key: SQLALCHEMY_ECHO
+          value: 'false'
+        - key: WEB_CONCURRENCY
+          value: 4
+        - key: DB_USER
+          fromDatabase:
+            name: caipyra-ledger-db
+            property: user
+        - key: DB_PASSWORD
+          fromDatabase:
+              name: caipyra-ledger-db
+              property: password
+        - key: DB_HOST
+          fromDatabase:
+              name: caipyra-ledger-db
+              property: host
+        - key: DB_PORT
+          fromDatabase:
+              name: caipyra-ledger-db
+              property: port
+        - key: DB_NAME
+          fromDatabase:
+              name: caipyra-ledger-db
+              property: database
+
+databases:
+    - name: caipyra-ledger-db
+      databaseName: caipyra_ledger
+      user: caipyra
+      plan: free
+      region: virginia
+      ipAllowList:
+          - source: 0.0.0.0/0
+            description: everywhere
+      postgresMajorVersion: "16"

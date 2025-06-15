@@ -1,0 +1,65 @@
+[project]
+name = "caipyra-ledger"
+version = "0.0.1"
+description = "Caipyra Ledger"
+authors = ["Pablo Aguilar <pablo.aguilar@outlook.com.br>"]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "asyncpg>=0.30.0",
+    "fastapi[standard]>=0.115.12",
+    "pydantic>=2.11.1",
+    "pydantic-settings>=2.8.1",
+    "sqlalchemy[asyncio]>=2.0.40",
+]
+
+[dependency-groups]
+dev = [
+    "alembic>=1.15.2",
+    "isort>=6.0.1",
+    "mypy>=1.16.0",
+    "pytest>=8.3.5",
+    "ruff>=0.11.13",
+]
+
+[tool.isort]
+profile = "google"
+src_paths = ["caipyra_ledger"]
+line_length = 100
+
+[tool.mypy]
+python_version = "3.13"
+
+# suppress errors about unsatisfied imports
+ignore_missing_imports = true
+
+plugins = ["pydantic.mypy"]
+
+# be strict
+warn_return_any = true
+strict_optional = true
+warn_no_return = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+disallow_any_generics = true
+
+disallow_untyped_defs = true
+check_untyped_defs = true
+disallow_untyped_calls = true
+
+[tool.ruff]
+exclude = [
+    ".git",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "alembic",
+    "ex.py",
+]
+
+line-length = 100
+indent-width = 4
+target-version = "py313"
