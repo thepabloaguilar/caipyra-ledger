@@ -65,7 +65,9 @@ class GetAccountResponse(BaseModel):
 
 
 class CreateTransactionRequest(BaseModel):
-    entries: list[Entry]
+    to_credit: str
+    to_debit: str
+    value: Decimal
     occurred_at: Optional[datetime] = None
 
 
